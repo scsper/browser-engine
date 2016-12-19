@@ -1,30 +1,42 @@
 // @flow
 type NodeData = Element | Text;
 
-class Node {
+export class Node {
   data: NodeData;
   children: Node[];
 
-  constructor(data) {
+  constructor(data: NodeData) {
     this.data = data;
     this.children = [];
   }
-}
 
-class Element {
-  tag: string;
-  attributes: {[id:string]: string};
-
-  constructor(tag, attributes) {
-    this.tag = tag;
-    this.attributes = attributes;
+  toString() {
+    return this.data.toString();
   }
 }
 
-class Text {
+export class Element {
+  tag: string;
+  attributes: {[id:string]: string};
+
+  constructor(tag: string, attributes: {[id:string]: string}) {
+    this.tag = tag;
+    this.attributes = attributes;
+  }
+
+  toString() {
+    return this.tag;
+  }
+}
+
+export class Text {
   text: string;
 
-  constructor(text) {
+  constructor(text: string) {
     this.text = text;
+  }
+
+  toString() {
+    return this.text;
   }
 }
