@@ -3,7 +3,7 @@ export default class Parser {
   position: number;
   input: string;
 
-  constructor(input = '') {
+  constructor(input: string) {
     this.position = 0;
     this.input = input;
   }

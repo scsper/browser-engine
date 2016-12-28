@@ -1,4 +1,5 @@
-import {createElement, createText} from './dom';
+// @flow
+import {Node, createElement, createText} from './dom_types';
 import invariant from '../invariant';
 import Parser from '../parser';
 
@@ -126,7 +127,7 @@ class DOMParser extends Parser {
   /**
    * Parse a quoted value
    */
-  parseAttributeValue(): String {
+  parseAttributeValue(): string {
     invariant(this.consume() === '"', `Expected attribute value to start with '"'`);
 
     const value = this.consumeWhile( c => c!== '"');
@@ -140,7 +141,7 @@ class DOMParser extends Parser {
 /**
  * Parse an HTML document and return the root element.
  */
-export function parse(source : String) : Node {
+export function parse(source: string): Node[] {
   const parser = new DOMParser(source);
 
   return parser.parseNodes();
