@@ -1,13 +1,13 @@
 export default function prettyPrint(tree) {
-  prettyPrintHelper(tree, 0);
+  prettyPrintHelper(tree[0], 0);
 }
 
-function prettyPrintHelper(tree, indentation) {
-  console.log(getIndentationString(indentation) + tree);
+function prettyPrintHelper(node, indentation) {
+  console.log(getIndentationString(indentation) + node);
 
-  if (tree.children.length) {
-    tree.children.forEach(node => {
-      prettyPrintHelper(node, indentation + 1);
+  if (node.children.length) {
+    node.children.forEach(childNode => {
+      prettyPrintHelper(childNode, indentation + 1);
     });
   }
 }

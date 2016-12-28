@@ -5,9 +5,9 @@ export class Node {
   data: NodeData;
   children: Node[];
 
-  constructor(data: NodeData) {
+  constructor(data: NodeData, children: Node[]) {
     this.data = data;
-    this.children = [];
+    this.children = children || [];
   }
 
   toString() {
@@ -39,4 +39,16 @@ export class Text {
   toString() {
     return this.text;
   }
+}
+
+export function createElement(tag: string, attributes: {[id: string]: string}, children: Node[]): Node {
+  const element = new Element(tag, attributes);
+
+  return new Node(element, children);
+}
+
+export function createText(data: string): Node {
+  const text = new Text(data);
+
+  return new Node(text, []);
 }

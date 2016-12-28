@@ -1,4 +1,4 @@
-import {Node, Element, Text} from './dom';
+import {createElement, createText} from './dom';
 import invariant from '../invariant';
 
 /**
@@ -116,7 +116,7 @@ class Parser {
   parseText(): Node {
     const text = this.consumeWhile(c => c !== '<');
 
-    return new Text(text);
+    return createText(text);
   }
 
   /**
@@ -141,7 +141,7 @@ class Parser {
     invariant(parsedTagName === tagName, `Expected parsed tag name [${parsedTagName}] to equal ${tagName}`);
     invariant(this.consume() === '>', `Expected a closing tag at position ${this.position} of input ${this.input}`);
 
-    return new Element(tagName, attributes, children);
+    return createElement(tagName, attributes, children);
   }
 
   /**
