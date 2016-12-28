@@ -10,4 +10,6 @@ const tree = parse(html);
 // const tree = new Node(new Element('div', {'attr': 'attr'}));
 // tree.children.push(new Node(new Text('hello')));
 
+console.log(JSON.stringify(tree, null, 2));
+
 prettyPrint(tree);

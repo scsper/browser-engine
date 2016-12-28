@@ -11,7 +11,7 @@ import invariant from '../invariant';
  * This is just a toy parser, so there is no real error handling, and we don't handle a lot of functionality.
  */
 
-const ALPHANUMERIC = /[a-z][A-Z][0-9]/;
+const ALPHANUMERIC = /[a-zA-Z0-9]/;
 
 // @flow
 class Parser {
@@ -72,14 +72,26 @@ class Parser {
    * Consumes all whitespace starting at the current position
    */
   consumeWhitespace(): void {
-    this.consumeWhile(c => Boolean(c.trim().length));
+    this.consumeWhile(c => !Boolean(c.trim().length));
   }
 
   /**
-   * Parse a tag or attribute name.
+   * Parse a sequence of sibling nodes.
    */
-  parseTagName(): string {
-    return this.consumeWhile(c => c.match(ALPHANUMERIC));
+  parseNodes(): Node[] {
+    const nodes = [];
+
+    while (true) {
+      this.consumeWhitespace();
+
+      if (this.eof() || this.startsWith('</')) {
+        break;
+      }
+
+      nodes.push(this.parseNode());
+    }
+
+    return nodes;
   }
 
   /**
@@ -87,11 +99,14 @@ class Parser {
    */
   parseNode(): Node {
     const char = this.peek();
+    console.log(char);
 
     if (char === '<') {
+      console.log('parsing element');
       return this.parseElement();
     }
 
+    console.log('parsing text');
     return this.parseText();
   }
 
@@ -108,12 +123,14 @@ class Parser {
    * Parse a single element, including its open tag, contents, and closing tag.
    */
   parseElement(): Node {
-    invariant(this.peek() === '<', `Expected an opening tag at position ${this.position} of input ${this.input}`);
+    invariant(this.consume() === '<', `Expected an opening tag at position ${this.position} of input ${this.input}`);
 
+    console.log(this.position);
     const tagName = this.parseTagName();
+    console.log(tagName);
     const attributes = this.parseAttributes();
 
-    invariant(this.peek() === '>', `Expected a closing tag at position ${this.position} of input ${this.input}`);
+    invariant(this.consume() === '>', `Expected a closing tag at position ${this.position} of input ${this.input}`);
 
     const children = this.parseNodes();
 
@@ -125,6 +142,34 @@ class Parser {
     invariant(this.consume() === '>', `Expected a closing tag at position ${this.position} of input ${this.input}`);
 
     return new Element(tagName, attributes, children);
+  }
+
+  /**
+   * Parse a tag or attribute name.
+   */
+  parseTagName(): string {
+    return this.consumeWhile(c => c.match(ALPHANUMERIC));
+  }
+
+  /**
+   * Parse a list of name="value" pairs, separated by whitespace.
+   */
+  parseAttributes(): {[id: string]: string} {
+    const attributes = {};
+
+    while (true) {
+      this.consumeWhitespace();
+
+      if (this.peek() == '>') {
+        break;
+      }
+
+      const {name, value} = this.parseAttribute();
+
+      attributes[name] = value;
+    }
+
+    return attributes;
   }
 
   /**
@@ -152,47 +197,6 @@ class Parser {
 
     return value;
   }
-
-  /**
-   * Parse a list of name="value" pairs, separated by whitespace.
-   */
-  parseAttributes(): {[id: string]: string} {
-    const attributes = {};
-
-    while (true) {
-      this.consumeWhitespace();
-
-      if (this.peek() == '>') {
-        break;
-      }
-
-      const {name, value} = this.parseAttribute();
-
-      attributes[name] = value;
-    }
-
-    return attributes;
-  }
-
-  /**
-   * Parse a sequence of sibling nodes.
-   */
-  parseNodes(): Node[] {
-    const nodes = [];
-
-    while (true) {
-      this.consumeWhitespace();
-
-      if (this.eof() || this.startsWith('</')) {
-        break;
-      }
-
-      nodes.push(this.parseNode());
-    }
-
-    return nodes;
-  }
-
 }
 
 /**
