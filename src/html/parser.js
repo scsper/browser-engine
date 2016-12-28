@@ -99,14 +99,11 @@ class Parser {
    */
   parseNode(): Node {
     const char = this.peek();
-    console.log(char);
 
     if (char === '<') {
-      console.log('parsing element');
       return this.parseElement();
     }
 
-    console.log('parsing text');
     return this.parseText();
   }
 
@@ -125,9 +122,7 @@ class Parser {
   parseElement(): Node {
     invariant(this.consume() === '<', `Expected an opening tag at position ${this.position} of input ${this.input}`);
 
-    console.log(this.position);
     const tagName = this.parseTagName();
-    console.log(tagName);
     const attributes = this.parseAttributes();
 
     invariant(this.consume() === '>', `Expected a closing tag at position ${this.position} of input ${this.input}`);
