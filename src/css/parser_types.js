@@ -1,23 +1,37 @@
 // @flow
+import invariant from '../invariant';
+
 type Selector = SimpleSelector;
 type Value = Keyword | Length | Color;
 type Keyword = string;
 
-class Stylesheet {
+export class Stylesheet {
   rules: Rule[];
 
-  constructor(rules: Rule[]) {
-    this.rules = rules;
+  constructor() {
+    this.rules = [];
+  }
+
+  addRule(rule: Rule) {
+    this.rules.push(rule);
+  }
+
+  toString(): string {
+    return this.rules.map(rule => rule.toString()).join(', ');
   }
 }
 
-class Rule {
+export class Rule {
   selectors: Selector[];
   declarations: Declaration[];
 
   constructor(selectors: Selector[], declarations: Declaration[]) {
-    this.selectors = [];
-    this.declarations = [];
+    this.selectors = selectors;
+    this.declarations = declarations;
+  }
+
+  toString(): string {
+    return `selectors: ${this.selectors.join(', ')}\ndeclarations: ${this.declarations.join(', ')}`;
   }
 }
 
@@ -31,19 +45,27 @@ export class SimpleSelector {
     this.id = id || '';
     this.classes = classes || [];
   }
-}
 
-class Declaration {
-  name: string;
-  value: Value;
-
-  constructor(name: string, value: Value) {
-    this.name = name;
-    this.value = value;
+  toString(): string {
+    return `tagName: ${this.tagName} id: ${this.id} classes: ${this.classes.join(', ')}`;
   }
 }
 
-class Length {
+export class Declaration {
+  name: string;
+  value: string;
+
+  constructor(name: string, value: string) {
+    this.name = name;
+    this.value = value;
+  }
+
+  toString(): string {
+    return `${this.name}:${this.value}`;
+  }
+}
+
+export class Length {
   value: number;
   unit: string;
 
@@ -53,7 +75,7 @@ class Length {
   }
 }
 
-class Color {
+export class Color {
   r: number;
   g: number;
   b: number;

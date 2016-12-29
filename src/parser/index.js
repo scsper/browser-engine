@@ -59,4 +59,8 @@ export default class Parser {
   consumeWhitespace(): void {
     this.consumeWhile(c => !Boolean(c.trim().length));
   }
+
+  toString() {
+    return this.input.slice(this.position);
+  }
 }

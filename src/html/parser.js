@@ -146,3 +146,5 @@ export function parse(source: string): Node[] {
 
   return parser.parseNodes();
 }
+
+export default DOMParser;
