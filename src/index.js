@@ -13,10 +13,10 @@ const css = fs.readFileSync(path.resolve(__dirname, '../src/hello_world.css'), '
 const cssParser = new CSSParser(css);
 const stylesheet = cssParser.parseStylesheet();
 
-// const tree = new Node(new Element('div', {'attr': 'attr'}));
-// tree.children.push(new Node(new Text('hello')));
-
-// console.log(JSON.stringify(tree, null, 2));
-
 prettyPrint(htmlTree);
 console.log(JSON.stringify(stylesheet, null, 2));
+
+// TODO:
+// 1. Get flow to work again
+// 2. Get `toString` to work correctly or get rid of it
+// 3. Specificity
