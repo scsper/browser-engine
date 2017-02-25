@@ -147,11 +147,11 @@ class CSSParser extends Parser {
   parseIdentifier(): string {
     this.consumeWhitespace();
 
-    return this.consumeWhile(c => c !== ',' && c !== '{');
+    return this.consumeWhile(c => c !== ',' && c !== '{').trim();
   }
 
   isValidIdentifierChar(c: string): boolean {
-    return c.match(ALPHANUMERIC);
+    return !!c.match(ALPHANUMERIC);
   }
 }
 

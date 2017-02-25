@@ -40,10 +40,10 @@ export class SimpleSelector {
   id: string;
   classes: string[];
 
-  constructor(tagName: string, id: string, classes: string[]) {
-    this.tagName = tagName || '';
-    this.id = id || '';
-    this.classes = classes || [];
+  constructor() {
+    this.tagName = '';
+    this.id = '';
+    this.classes = [];
   }
 
   toString(): string {
@@ -56,8 +56,8 @@ export class Declaration {
   value: string;
 
   constructor(name: string, value: string) {
-    this.name = name;
-    this.value = value;
+    this.name = name.trim();
+    this.value = value.trim();
   }
 
   toString(): string {

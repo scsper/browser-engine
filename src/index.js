@@ -17,6 +17,5 @@ prettyPrint(htmlTree);
 console.log(JSON.stringify(stylesheet, null, 2));
 
 // TODO:
-// 1. Get flow to work again
 // 2. Get `toString` to work correctly or get rid of it
 // 3. Specificity
